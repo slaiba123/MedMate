@@ -36,7 +36,7 @@ const HeroSection = () => {
     widget.setAttribute('consent-title', 'Terms and conditions');
     widget.setAttribute('consent-content', 'By clicking "Agree," and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service.');
     widget.setAttribute('consent-storage-key', 'vapi_widget_consent');
-    
+    widget.setAttribute('server-url', 'https://earl-unpronounceable-willette.ngrok-free.dev');
     // Append to body
     document.body.appendChild(widget);
 
