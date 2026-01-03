@@ -15,8 +15,8 @@ const HeroSection = () => {
     const widget = document.createElement('vapi-widget');
     
    
-    widget.setAttribute('public-key', 'ee0c1619-d378-4e18-89f4-8bba228c8d36');
-    widget.setAttribute('assistant-id', '4d4357ee-ad18-48d6-b41c-3d6061607085');
+    widget.setAttribute('public-key', '6fc5c7a6-7c20-422a-8563-33ee6db6e7d5');
+    widget.setAttribute('assistant-id', '42765037-f3cd-4313-87e7-4b4fb79f02bf');
     widget.setAttribute('mode', 'voice');
     widget.setAttribute('theme', 'dark');
     widget.setAttribute('base-bg-color', '#ffffff'); 
