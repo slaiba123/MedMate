@@ -1,6 +1,6 @@
 // controllers/patientController.js - COMPLETE WITH ALL EXPORTS
 import User from "../models/User.js";
-import DoctorDetails from "../models/DoctorDetails.js";
+import DoctorDetails from "../models/doctorDetails.js";
 import Appointment from "../models/Appointment.js";
 import { generateSlotsForDate } from "../utils/slots.js";
 import { sendEmail } from "../utils/mail.js";

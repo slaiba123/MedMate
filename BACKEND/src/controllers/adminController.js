@@ -1,6 +1,6 @@
 // controllers/adminController.js
 import User from "../models/User.js";
-import DoctorDetails from "../models/DoctorDetails.js";
+import DoctorDetails from "../models/doctorDetails.js";
 import City from "../models/City.js";
 import bcrypt from "bcryptjs";
 

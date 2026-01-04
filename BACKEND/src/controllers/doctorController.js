@@ -1,6 +1,6 @@
 // controllers/doctorController.js
 import Appointment from "../models/Appointment.js";
-import DoctorDetails from "../models/DoctorDetails.js";
+import DoctorDetails from "../models/doctorDetails.js";
 import { startOfDay, endOfDay } from "date-fns";
 import moment from "moment-timezone";
 
