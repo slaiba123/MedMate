@@ -20,6 +20,9 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    "extends": "next/core-web-vitals"
+  }
 ];
 
 export default eslintConfig;
