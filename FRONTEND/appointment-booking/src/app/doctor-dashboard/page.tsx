@@ -13,7 +13,7 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 
 // 🔥 ADD THIS RIGHT AFTER IMPORTS
-axios.defaults.baseURL = 'http://localhost:4000/api';
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 axios.defaults.withCredentials = true; // CRITICAL for cookies!
 
 // Types

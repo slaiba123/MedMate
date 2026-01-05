@@ -53,7 +53,7 @@ export default function AppointmentForm({ doctorId, doctorName, specialization, 
     
     setLoadingSlots(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/patient/doctors/${finalDoctorId}/slots?date=${date}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patient/doctors/${finalDoctorId}/slots?date=${date}`);
       if (res.ok) {
         const data = await res.json();
         setAvailableSlots(data.slots || []);
@@ -109,7 +109,7 @@ export default function AppointmentForm({ doctorId, doctorName, specialization, 
         consultationFee: finalConsultationFee // Use the actual consultation fee
       };
 
-      const res = await fetch('http://localhost:4000/api/patient/appointments', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patient/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
