@@ -23,6 +23,7 @@ type Doctor = {
       specialization: string;
       education: string;
       consultationFee: number;
+      experience: number;
       image?: string;
       enabled: boolean;
       cityId: string;
@@ -149,7 +150,8 @@ const AddDoctorModal = ({ isOpen, onClose, onAdd, cities }: {
     specialization: '',
     education: '',
     consultationFee: '',
-    cityId: ''
+    cityId: '',
+    experience: ''
   });
   const [image, setImage] = useState<File | null>(null);
 
@@ -174,7 +176,8 @@ const AddDoctorModal = ({ isOpen, onClose, onAdd, cities }: {
       specialization: '',
       education: '',
       consultationFee: '',
-      cityId: ''
+      cityId: '',
+      experience: ''
     });
     setImage(null);
   };
@@ -234,12 +237,21 @@ const AddDoctorModal = ({ isOpen, onClose, onAdd, cities }: {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          < div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2">Education</label>
               <Input
                 value={formData.education}
                 onChange={(e) => setFormData({...formData, education: e.target.value})}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Experience</label>
+              <Input
+                type="number"
+                value={formData.experience}
+                onChange={(e) => setFormData({...formData, experience: e.target.value})}
                 required
               />
             </div>
@@ -252,9 +264,6 @@ const AddDoctorModal = ({ isOpen, onClose, onAdd, cities }: {
                 required
               />
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2">City</label>
               <Select value={formData.cityId} onValueChange={(value) => setFormData({...formData, cityId: value})}>
@@ -315,7 +324,8 @@ const EditDoctorModal = ({
     education: '',
     consultationFee: '',
     cityId: '',
-    enabled: true
+    enabled: true,
+    experience: '',
   });
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -335,7 +345,7 @@ const EditDoctorModal = ({
       const consultationFee = doctor.details?.consultationFee || 0;
       const cityId = doctor.details?.cityId || '';
       const enabled = doctor.details?.enabled !== false;
-
+      const experience= doctor.details?.experience || 0;
       const newFormData = {
         name: doctor.name || '',
         email: doctor.email || '',
@@ -343,7 +353,8 @@ const EditDoctorModal = ({
         education: education,
         consultationFee: consultationFee.toString(),
         cityId: cityId,
-        enabled: enabled
+        enabled: enabled,
+        experience: experience.toString()
       };
       
       console.log('📝 FINAL FORM DATA:', newFormData);
@@ -368,7 +379,8 @@ const EditDoctorModal = ({
         education: formData.education,
         consultationFee: Number(formData.consultationFee),
         cityId: formData.cityId,
-        enabled: formData.enabled
+        enabled: formData.enabled,
+        experience: formData.experience || 0,
       };
 
       console.log('📤 SENDING UPDATE DATA TO BACKEND:', updateData);

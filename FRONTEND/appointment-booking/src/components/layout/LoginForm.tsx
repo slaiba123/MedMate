@@ -92,6 +92,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             )}
           </Button>
         </form>
+        <p className="mt-4 text-sm text-center">
+          
+  <a
+    href="/update-password"
+    className="text-blue-600 hover:underline"
+  >
+    Forgot Password?
+  </a>
+</p>
+
       </div>
     </div>
   );

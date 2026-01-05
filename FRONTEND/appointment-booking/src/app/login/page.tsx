@@ -38,6 +38,7 @@ export default function LoginPage() {
   }, [user, loading, router]);
 
   return (
+    <div>
     <LoginForm
       onSubmit={handleLogin}
       isLoading={isLoading}
@@ -45,5 +46,8 @@ export default function LoginPage() {
       title="Doctor/Admin Login"
       subtitle="Sign in to access your medical dashboard. Only authorized Doctors and Admins are allowed."
     />
+    
+</div>
+    
   );
 }

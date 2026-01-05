@@ -102,15 +102,15 @@ export const listDoctors = async (req, res) => {
 // Add Doctor
 export const addDoctor = async (req, res) => {
   try {
-    const { name, email, password, specialization, education, consultationFee, cityId } = req.body;
+    const { name, email, password, specialization, education, consultationFee, cityId,experience } = req.body;
 
     // Validate required fields
-    if (!name || !email || !password || !specialization || !education || !consultationFee || !cityId) {
+    if (!name || !email || !password || !specialization || !education || !consultationFee || !cityId|| experience === undefined) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    console.log("📝 Received doctor data:", {
-      name, email, specialization, education, consultationFee, cityId
+    console.log("✒️✉️ Received doctor data:", {
+      name, email, specialization, education, consultationFee, cityId,experience
     });
 
     // 1. Check duplicate email
@@ -151,6 +151,7 @@ export const addDoctor = async (req, res) => {
         cityId: cityDoc._id,
         availability: [],
         image: imageUrl,
+        experience: Number(experience),
         enabled: true, // Default to enabled
       });
     } catch (err) {
@@ -226,7 +227,7 @@ export const enableDoctor = async (req, res) => {
 export const updateDoctor = async (req, res) => {
   try {
     const { doctorId } = req.params;
-    const { name, email, specialization, education, consultationFee, cityId, enabled } = req.body;
+    const { name, email, specialization, education, consultationFee, cityId, enabled ,experience} = req.body;
 
     // Update user info
     const user = await User.findByIdAndUpdate(
@@ -245,7 +246,10 @@ export const updateDoctor = async (req, res) => {
     if (consultationFee !== undefined) updateData.consultationFee = consultationFee;
     if (cityId !== undefined) updateData.cityId = cityId;
     if (enabled !== undefined) updateData.enabled = enabled;
-
+    if (experience !== undefined) {
+      updateData.experience = Number(experience);
+    }
+    
     const details = await DoctorDetails.findOneAndUpdate(
       { userId: doctorId },
       updateData,

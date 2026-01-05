@@ -8,6 +8,74 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt.js";
 
+// ========================== REGISTER ==========================
+export const register = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+
+    // Validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: role || "patient", // Default to patient if not specified
+    });
+
+    // Create tokens
+    const accessToken = signAccessToken(user);
+    const { token: refreshToken, expiresAt } = signRefreshToken(user);
+
+    // Save refresh token in DB
+    await RefreshToken.create({
+      token: refreshToken,
+      userId: user._id,
+      expiresAt,
+    });
+
+    // Set tokens in cookies
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000, // 15 mins
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.status(201).json({
+      message: "Registration successful",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // ========================== LOGIN ==========================
 export const login = async (req, res) => {
   try {
@@ -58,6 +126,49 @@ export const login = async (req, res) => {
     });
   } catch (err) {
     console.error("Login error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+// ====================== UPDATE PASSWORD ======================
+export const updatePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Get user from middleware
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password
+    user.password = hashedPassword;
+    await user.save();
+
+    // Invalidate all refresh tokens (important security step)
+    await RefreshToken.deleteMany({ userId: user._id });
+
+    // Clear cookies to force re-login
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+
+    res.json({ message: "Password updated successfully. Please login again." });
+  } catch (err) {
+    console.error("Update password error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
