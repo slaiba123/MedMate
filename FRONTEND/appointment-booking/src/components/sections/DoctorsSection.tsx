@@ -124,7 +124,7 @@ export default function DoctorsSection() {
     const fetchDoctors = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/patient/doctors`
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/patient/doctors`
         );
 
         // Map backend data into safe Doctor objects
