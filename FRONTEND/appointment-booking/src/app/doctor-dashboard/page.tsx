@@ -83,7 +83,7 @@ export default function DoctorDashboard() {
     if (!doctorId) return;
 
     try {
-      const response = await axios.get(`/doctors/${doctorId}/stats`);
+      const response = await axios.get(`/api/doctors/${doctorId}/stats`);
       setStats(response.data);
     } catch (err: any) {
       if (err.response?.status === 401) {
@@ -105,7 +105,7 @@ export default function DoctorDashboard() {
 
     try {
       setLoading(true);
-      const response = await axios.get(`/doctors/${doctorId}/appointments`);
+      const response = await axios.get(`/api/doctors/${doctorId}/appointments`);
       setAppointments(response.data);
       setError("");
     } catch (err: any) {
@@ -126,7 +126,7 @@ export default function DoctorDashboard() {
     if (!doctorId) return;
 
     try {
-      const response = await axios.get(`/doctors/${doctorId}/availability`);
+      const response = await axios.get(`/api/doctors/${doctorId}/availability`);
       setAvailability(response.data.availability || []);
     } catch (err: any) {
       console.error('Error fetching availability:', err);
@@ -136,7 +136,7 @@ export default function DoctorDashboard() {
   // Update appointment status
   const updateAppointmentStatus = async (appointmentId: string, status: string) => {
     try {
-      await axios.patch(`/doctors/appointments/${appointmentId}/status`, { status });
+      await axios.patch(`/api/doctors/appointments/${appointmentId}/status`, { status });
       setShowStatusDropdown(null);
       await Promise.all([fetchAppointments(), fetchStats()]);
     } catch (err: any) {
@@ -154,7 +154,7 @@ export default function DoctorDashboard() {
     if (!confirm("Are you sure you want to delete this appointment?")) return;
 
     try {
-      await axios.delete(`/doctors/appointments/${appointmentId}`);
+      await axios.delete(`/api/doctors/appointments/${appointmentId}`);
       await Promise.all([fetchAppointments(), fetchStats()]);
     } catch (err: any) {
       if (err.response?.status === 401) {
@@ -183,7 +183,7 @@ export default function DoctorDashboard() {
         return acc;
       }, [] as AvailabilitySlot[]);
 
-      await axios.post(`/doctors/${doctorId}/availability`, { availability: uniqueAvailability });
+      await axios.post(`/api/doctors/${doctorId}/availability`, { availability: uniqueAvailability });
       alert("Availability saved successfully!");
       setShowAvailabilityModal(false);
       await fetchAvailability();
