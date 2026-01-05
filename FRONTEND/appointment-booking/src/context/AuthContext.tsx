@@ -663,7 +663,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const interval = 14 * 60 * 1000; // 14 minutes
     refreshTimerRef.current = setTimeout(async () => {
       try {
-        await axios.post("/auth/refresh", {});
+        await axios.post("/api/auth/refresh", {});
         console.log("✅ Token auto-refreshed");
       } catch (err) {
         console.error("❌ Auto-refresh failed");
@@ -675,7 +675,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   /** 👤 Fetch user from cookie-authenticated session */
   const fetchUser = useCallback(async () => {
     try {
-      const res = await axios.get("/auth/me");
+      const res = await axios.get("/api/auth/me");
       setUser(res.data.user);
       scheduleTokenRefresh();
     } catch {
@@ -695,8 +695,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      await axios.post("/auth/login", { email, password });
-      const res = await axios.get("/auth/me");
+      await axios.post("/api/auth/login", { email, password });
+      const res = await axios.get("/api/auth/me");
       setUser(res.data.user);
       scheduleTokenRefresh();
     } catch (error: any) {
@@ -710,7 +710,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     clearRefreshTimer();
     try {
-      await axios.post("/auth/logout", {});
+      await axios.post("/api/auth/logout", {});
     } catch {}
     setUser(null);
     if (!window.location.pathname.includes("/login")) {
