@@ -53,7 +53,7 @@ class ApiService {
     if (params?.specialization) queryParams.append('specialization', params.specialization);
     if (params?.name) queryParams.append('name', params.name);
     
-    const response = await fetch(`${API_BASE_URL}/admin/doctors?${queryParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/doctors?${queryParams}`, {
       credentials: 'include',
       headers: this.getHeaders()
     });
@@ -63,7 +63,7 @@ class ApiService {
   }
 
   static async getCities() {
-    const response = await fetch(`${API_BASE_URL}/admin/cities`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/cities`, {
       credentials: 'include',
       headers: this.getHeaders()
     });
@@ -73,7 +73,7 @@ class ApiService {
   }
 
   static async addDoctor(doctorData: FormData) {
-    const response = await fetch(`${API_BASE_URL}/admin/doctors/add`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/doctors/add`, {
       method: 'POST',
       credentials: 'include',
       body: doctorData
@@ -89,7 +89,7 @@ class ApiService {
 
   static async toggleDoctorStatus(doctorId: string, enable: boolean) {
     const endpoint = enable ? 'enable' : 'disable';
-    const response = await fetch(`${API_BASE_URL}/admin/doctors/${doctorId}/${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/doctors/${doctorId}/${endpoint}`, {
       method: 'PATCH',
       credentials: 'include',
       headers: this.getHeaders()
@@ -100,7 +100,7 @@ class ApiService {
   }
 
   static async deleteDoctor(doctorId: string) {
-    const response = await fetch(`${API_BASE_URL}/admin/doctors/${doctorId}/delete`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/doctors/${doctorId}/delete`, {
       method: 'DELETE',
       credentials: 'include',
       headers: this.getHeaders()
@@ -117,7 +117,7 @@ class ApiService {
       specialization: doctorData.specialization
     });
   
-    const response = await fetch(`${API_BASE_URL}/admin/doctors/${doctorId}/update`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/doctors/${doctorId}/update`, {
       method: 'PUT',
       credentials: 'include',
       headers: this.getHeaders(),
