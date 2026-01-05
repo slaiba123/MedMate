@@ -130,14 +130,25 @@ import vapiFunctionRoutes from "./src/routes/vapiFunctionRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware - FIXED CORS
+// Middleware - CORS with wildcard support
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    'https://earl-unpronounceable-willette.ngrok-free.dev',
-    'https://med-mate-wc2l.vercel.app', // ADD YOUR VERCEL URL
-    'https://*.vercel.app' // Allow all Vercel preview deployments
-  ],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://earl-unpronounceable-willette.ngrok-free.dev',
+      'https://med-mate-wc2l.vercel.app'
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed list or ends with .vercel.app
+    if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -161,7 +172,7 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/vapi", vapiFunctionRoutes);
 
-// Start Server - FIXED console.log
+// Start Server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`); // Use parentheses, not backticks
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
