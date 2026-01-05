@@ -25,39 +25,13 @@
 //     </div>
 //   );
 // }
-
-'use client';
-
-import { useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import AppointmentForm from "@/components/sections/AppointmentForm";
+import { Suspense } from "react";
+import AppointmentFormClient from "./AppointmentFormClient";
 
 export default function AppointmentFormPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const doctorId = searchParams.get("doctorId");
-  const doctorName = searchParams.get("doctorName");
-  const specialization = searchParams.get("specialization");
-  const consultationFee = searchParams.get("consultationFee");
-
-  // Redirect if no doctorId
-  useEffect(() => {
-    if (!doctorId) {
-      router.push("/doctors");
-    }
-  }, [doctorId, router]);
-
-  if (!doctorId) return null; // render nothing while redirecting
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <AppointmentForm
-        doctorId={doctorId}
-        doctorName={doctorName || ""}
-        specialization={specialization || ""}
-        consultationFee={consultationFee || ""}
-      />
-    </div>
+    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+      <AppointmentFormClient />
+    </Suspense>
   );
 }
