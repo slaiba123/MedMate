@@ -51,10 +51,9 @@
     
 //   );
 // }
-
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { LoginForm } from "@/components/layout/LoginForm";
@@ -65,34 +64,45 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  /** Handle login submit */
   const handleLogin = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
+
     try {
       await login(email, password);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Login failed");
     } finally {
       setIsLoading(false);
     }
   };
 
+  /** Redirect after login based on role */
   useEffect(() => {
     if (!loading && user) {
-      if (user.role === "admin") router.push("/Admin");
-      else if (user.role === "doctor") router.push("/doctor-dashboard");
-      else setError("Access denied");
+      // Ensure role is always an array
+      const roles = Array.isArray(user.role) ? user.role : [user.role];
+
+      if (roles.includes("admin")) {
+        router.push("/Admin");
+      } else if (roles.includes("doctor")) {
+        router.push("/doctor-dashboard");
+      } else {
+        setError("Access denied. Only Doctors and Admins are allowed");
+      }
     }
   }, [user, loading, router]);
 
   return (
-    <LoginForm
-      onSubmit={handleLogin}
-      isLoading={isLoading}
-      error={error}
-      title="Doctor/Admin Login"
-      subtitle="Authorized access only"
-    />
+    <div>
+      <LoginForm
+        onSubmit={handleLogin}
+        isLoading={isLoading}
+        error={error}
+        title="Doctor/Admin Login"
+        subtitle="Sign in to access your medical dashboard. Only authorized Doctors and Admins are allowed."
+      />
+    </div>
   );
 }
-
