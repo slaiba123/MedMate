@@ -1,30 +1,3 @@
-// import mongoose from "mongoose";
-
-// const appointmentSchema = new mongoose.Schema(
-//   {
-//     doctorId: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User",
-//       required: true,
-//     },
-//     startTime: { type: Date, required: true }, // exact start datetime
-//     endTime: { type: Date, required: true },   // exact end datetime
-//     status: {
-//       type: String,
-//       enum: ["booked", "completed", "cancelled", "missed"],
-//       default: "booked",
-//     },
-//     symptoms: { type: String }, // reason for visit
-//     consultationFee: { type: Number }, // snapshot at booking time
-//   },
-//   { timestamps: true }
-// );
-
-// // Optional: Prevent double booking (doctor + same startTime)
-// appointmentSchema.index({ doctorId: 1, startTime: 1 }, { unique: true });
-
-// export default mongoose.model("Appointment", appointmentSchema);
-
 import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema(
