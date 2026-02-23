@@ -2,7 +2,7 @@
 
 A modern healthcare booking platform that allows patients to schedule appointments with doctors via **form** or **voice commands**. Built using **Next.js**, **Node.js**, and **MongoDB**, with **JWT authentication**, **email confirmations**, and **AI-powered voice booking**.  
 
-**Live Demo:** [medmate.vercel.app](#)  
+**Live Demo:** [[medmate.vercel.app](#)](https://med-mate-config.vercel.app/)  
 
 ---
 
